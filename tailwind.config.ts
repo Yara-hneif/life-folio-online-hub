@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,19 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Adding the new ocean palette
+				ocean: {
+					'50': '#006466',
+					'100': '#065a60',
+					'200': '#0b525b',
+					'300': '#144552',
+					'400': '#1b3a4b',
+					'500': '#212f45',
+					'600': '#272640',
+					'700': '#312244',
+					'800': '#3e1f47',
+					'900': '#4d194d',
 				}
 			},
 			fontFamily: {
