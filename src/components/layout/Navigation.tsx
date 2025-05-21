@@ -1,5 +1,5 @@
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 interface NavigationProps {
@@ -8,6 +8,8 @@ interface NavigationProps {
 }
 
 const Navigation = ({ mobile, onItemClick }: NavigationProps) => {
+  const location = useLocation();
+  
   const links = [
     { text: "Home", href: "/" },
     { text: "Projects", href: "/projects" },
@@ -19,21 +21,34 @@ const Navigation = ({ mobile, onItemClick }: NavigationProps) => {
   return (
     <nav className={cn(
       "flex",
-      mobile ? "flex-col space-y-4" : "items-center space-x-6"
+      mobile ? "flex-col space-y-6" : "items-center space-x-1"
     )}>
-      {links.map((link) => (
-        <Link
-          key={link.href}
-          to={link.href}
-          className={cn(
-            "text-foreground/70 hover:text-foreground transition-colors",
-            mobile ? "text-lg" : "text-sm font-medium"
-          )}
-          onClick={onItemClick}
-        >
-          {link.text}
-        </Link>
-      ))}
+      {links.map((link) => {
+        const isActive = location.pathname === link.href;
+        
+        return (
+          <Link
+            key={link.href}
+            to={link.href}
+            className={cn(
+              "relative px-3 py-2 transition-all duration-300",
+              mobile ? "text-lg" : "text-sm font-medium",
+              isActive 
+                ? "text-primary" 
+                : "text-foreground/70 hover:text-foreground"
+            )}
+            onClick={onItemClick}
+          >
+            {link.text}
+            {isActive && (
+              <span className={cn(
+                "absolute bottom-0 left-0 w-full h-0.5 bg-primary rounded-full",
+                mobile ? "bottom-[-4px]" : ""
+              )} />
+            )}
+          </Link>
+        );
+      })}
     </nav>
   );
 };
