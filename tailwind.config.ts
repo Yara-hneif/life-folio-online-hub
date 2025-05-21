@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,9 +19,6 @@ export default {
 			}
 		},
 		extend: {
-			perspective: {
-				'1000px': '1000px',
-			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
