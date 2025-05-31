@@ -1,6 +1,6 @@
 # Life Folio – Personal Portfolio Hub
 
-✨ A beautiful, responsive, and modern personal portfolio website designed to showcase creative projects and digital experiences.
+✨ A beautiful, responsive, and modern personal portfolio website designed to showcase creative projects.
 
 ✨ Portfolio platform built with **Vite + React + TailwindCSS + TypeScript**
 
