@@ -11,7 +11,7 @@
 This website is deployed privately via Netlify and accessible from any device:
 
 
-👉 [Click here to view the live website](https://life-folio-online-hub.netlify.app/)
+👉 [Click here to view the live website](https://life-folio.netlify.app/)
 
   [![Netlify Status](https://api.netlify.com/api/v1/badges/30583914-2be3-40d0-a02b-8ceb9ab1b04e/deploy-status)](https://app.netlify.com/projects/life-folio/deploys)
 
