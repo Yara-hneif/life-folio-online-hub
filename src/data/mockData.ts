@@ -1,124 +1,102 @@
-import { mockUsers } from '@/contexts/AuthContext';
-
 export interface Project {
   id: string;
   title: string;
   description: string;
-  longDescription?: string;
   image?: string;
   technologies: string[];
-  status: 'planning' | 'in-progress' | 'completed';
   githubUrl?: string;
   liveUrl?: string;
-  createdAt: string;
-  updatedAt: string;
-  userId: string;
-  collaborators: Collaborator[];
+  ownerId: string;
+  collaborators: User[]; // User objects instead of IDs
+  status: 'planning' | 'in-progress' | 'completed';
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface Collaborator {
+export interface User {
   id: string;
   username: string;
   name: string;
   avatar?: string;
-  role?: string;
 }
 
-// Convert mockUsers to collaborators format
-export const mockCollaborators: Collaborator[] = mockUsers.map(user => ({
-  id: user.id,
-  username: user.username,
-  name: user.name,
-  avatar: user.avatar
-}));
-
+// Mock projects data
 export const mockProjects: Project[] = [
   {
     id: '1',
     title: 'E-commerce Platform',
-    description: 'A full-stack e-commerce solution with React and Node.js',
-    longDescription: 'Built a comprehensive e-commerce platform featuring user authentication, product catalog, shopping cart, payment processing, and admin dashboard. Implemented with modern technologies and best practices.',
-    image: '/api/placeholder/600/400',
-    technologies: ['React', 'Node.js', 'PostgreSQL', 'Stripe', 'Tailwind CSS'],
+    description: 'A modern e-commerce platform built with React and Node.js, featuring user authentication, product catalog, shopping cart, and payment integration.',
+    image: '/api/placeholder/400/250',
+    technologies: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
+    githubUrl: 'https://github.com/johndoe/ecommerce',
+    liveUrl: 'https://ecommerce-demo.com',
+    ownerId: '1',
+    collaborators: [{ id: '2', username: 'sarahsmith', name: 'Sarah Smith', avatar: '/api/placeholder/150/150' }],
     status: 'completed',
-    githubUrl: 'https://github.com/johndoe/ecommerce-platform',
-    liveUrl: 'https://ecommerce-demo.example.com',
-    createdAt: '2024-01-01',
-    updatedAt: '2024-01-15',
-    userId: '1',
-    collaborators: [mockCollaborators[1]]
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-02-01')
   },
   {
     id: '2',
-    title: 'Portfolio Website',
-    description: 'Modern portfolio built with Next.js and Tailwind CSS',
-    longDescription: 'A responsive portfolio website showcasing projects and skills. Features dark mode, smooth animations, and optimized performance.',
-    image: '/api/placeholder/600/400',
-    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+    title: 'Task Management App',
+    description: 'A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.',
+    image: '/api/placeholder/400/250',
+    technologies: ['React', 'TypeScript', 'Socket.io', 'MongoDB'],
+    githubUrl: 'https://github.com/sarahsmith/taskmanager',
+    liveUrl: 'https://taskmanager-demo.com',
+    ownerId: '2',
+    collaborators: [{ id: '1', username: 'johndoe', name: 'John Doe', avatar: '/api/placeholder/150/150' }],
     status: 'in-progress',
-    githubUrl: 'https://github.com/johndoe/portfolio',
-    createdAt: '2024-01-05',
-    updatedAt: '2024-01-10',
-    userId: '1',
-    collaborators: []
+    createdAt: new Date('2024-02-10'),
+    updatedAt: new Date('2024-02-20')
   },
   {
     id: '3',
-    title: 'Task Management App',
-    description: 'Collaborative task management with real-time updates',
-    longDescription: 'A collaborative task management application with real-time updates, team collaboration features, and project organization.',
-    image: '/api/placeholder/600/400',
-    technologies: ['React', 'Socket.io', 'MongoDB', 'Express', 'Redux'],
+    title: 'Weather Dashboard',
+    description: 'A responsive weather dashboard with location-based forecasts, interactive maps, and weather alerts.',
+    image: '/api/placeholder/400/250',
+    technologies: ['Vue.js', 'Express.js', 'OpenWeather API'],
+    githubUrl: 'https://github.com/johndoe/weather-dashboard',
+    ownerId: '1',
+    collaborators: [],
     status: 'planning',
-    githubUrl: 'https://github.com/johndoe/task-manager',
-    createdAt: '2024-01-08',
-    updatedAt: '2024-01-08',
-    userId: '1',
-    collaborators: [mockCollaborators[1]]
-  },
-  {
-    id: '4',
-    title: 'Design System',
-    description: 'Comprehensive UI component library and design system',
-    longDescription: 'A complete design system with reusable components, design tokens, and documentation. Built to scale across multiple applications.',
-    image: '/api/placeholder/600/400',
-    technologies: ['React', 'Storybook', 'Styled Components', 'TypeScript'],
-    status: 'completed',
-    githubUrl: 'https://github.com/sarahsmith/design-system',
-    liveUrl: 'https://design-system.example.com',
-    createdAt: '2023-12-15',
-    updatedAt: '2024-01-12',
-    userId: '2',
-    collaborators: [mockCollaborators[0]]
+    createdAt: new Date('2024-03-01'),
+    updatedAt: new Date('2024-03-10')
   }
 ];
 
-// Get projects for a specific user
+// Helper functions
 export const getProjectsByUserId = (userId: string): Project[] => {
-  return mockProjects.filter(project => project.userId === userId);
+  return mockProjects.filter(project => project.ownerId === userId);
 };
 
-// Get projects where user is a collaborator
 export const getCollaborativeProjects = (userId: string): Project[] => {
   return mockProjects.filter(project => 
-    project.collaborators.some(collaborator => collaborator.id === userId)
+    project.collaborators.some(collaborator => collaborator.id === userId) && project.ownerId !== userId
   );
 };
 
-// Get all projects (for browsing)
-export const getAllProjects = (): Project[] => {
-  return mockProjects;
+export const getUserById = (userId: string): User | undefined => {
+  const users = [
+    { id: '1', username: 'johndoe', name: 'John Doe', avatar: '/api/placeholder/150/150' },
+    { id: '2', username: 'sarahsmith', name: 'Sarah Smith', avatar: '/api/placeholder/150/150' }
+  ];
+  return users.find(user => user.id === userId);
 };
 
-// Get project by ID
-export const getProjectById = (id: string): Project | undefined => {
-  return mockProjects.find(project => project.id === id);
+export const getAllUsers = (): User[] => {
+  return [
+    { id: '1', username: 'johndoe', name: 'John Doe', avatar: '/api/placeholder/150/150' },
+    { id: '2', username: 'sarahsmith', name: 'Sarah Smith', avatar: '/api/placeholder/150/150' }
+  ];
 };
 
-// Get user's complete project involvement (owned + collaborative)
-export const getUserProjects = (userId: string): { owned: Project[], collaborative: Project[] } => {
-  return {
-    owned: getProjectsByUserId(userId),
-    collaborative: getCollaborativeProjects(userId)
-  };
+// Updated function to return separated owned and collaborative projects
+export const getUserProjects = (userId: string) => {
+  const owned = getProjectsByUserId(userId);
+  const collaborative = getCollaborativeProjects(userId);
+  return { owned, collaborative };
 };
+
+// Mock collaborators for project creation form
+export const mockCollaborators = getAllUsers();

@@ -99,7 +99,7 @@ const Projects = () => {
                 <ProjectCard 
                   key={project.id} 
                   project={project} 
-                  showActions={project.userId === user.id}
+                  showActions={project.ownerId === user.id}
                 />
               ))}
             </div>

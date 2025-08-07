@@ -1,8 +1,9 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import UserAvatar from "@/components/common/UserAvatar";
 import Navigation from "./Navigation";
 
 const Header = () => {
