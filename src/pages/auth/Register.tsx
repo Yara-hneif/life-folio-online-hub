@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Mail, Lock, User, AtSign, ArrowLeft } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
+import { Loader2, Mail, Lock, User, AtSign, ArrowLeft, Github, Linkedin } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Register = () => {
@@ -30,12 +31,12 @@ const Register = () => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error('كلمتا المرور غير متطابقتين');
       return;
     }
 
     if (formData.password.length < 6) {
-      toast.error('Password must be at least 6 characters');
+      toast.error('يجب أن تكون كلمة المرور 6 أحرف على الأقل');
       return;
     }
     
@@ -46,44 +47,111 @@ const Register = () => {
         email: formData.email,
         password: formData.password
       });
-      toast.success('Account created successfully!');
+      toast.success('تم إنشاء الحساب بنجاح!');
       navigate('/dashboard');
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Registration failed');
+      toast.error(error instanceof Error ? error.message : 'فشل في إنشاء الحساب');
     }
   };
 
+  const handleSocialLogin = (provider: string) => {
+    toast.info(`سيتم دعم التسجيل عبر ${provider} قريباً`);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 sparkle-bg">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-br from-background via-background to-secondary/20">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
           <Button
             variant="ghost"
             size="sm"
-            className="mb-4"
+            className="mb-4 hover-lift"
             onClick={() => navigate('/')}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Home
+            العودة للرئيسية
           </Button>
-          <h1 className="text-3xl font-bold">Create Account</h1>
+          
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center text-white text-2xl font-bold">
+              VP
+            </div>
+          </div>
+          
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            انضم إلينا
+          </h1>
           <p className="text-muted-foreground mt-2">
-            Join the portfolio platform
+            أنشئ حسابك وابدأ بناء بورتفوليوك المميز
           </p>
         </div>
 
-        <Card className="glass">
-          <CardHeader>
-            <CardTitle>Sign Up</CardTitle>
+        <Card className="glass shadow-2xl border-0">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">إنشاء حساب جديد</CardTitle>
             <CardDescription>
-              Create your account to start building your portfolio
+              اختر طريقة إنشاء الحساب المفضلة لديك
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-6">
+            {/* Social Login Buttons */}
+            <div className="space-y-3">
+              <Button 
+                type="button" 
+                variant="outline" 
+                className="w-full h-12 hover-lift transition-all duration-300" 
+                onClick={() => handleSocialLogin('Gmail')}
+              >
+                <Mail className="h-5 w-5 mr-3 text-red-500" />
+                <span className="font-medium">التسجيل مع Gmail</span>
+              </Button>
+              
+              <Button 
+                type="button" 
+                variant="outline" 
+                className="w-full h-12 hover-lift transition-all duration-300" 
+                onClick={() => handleSocialLogin('GitHub')}
+              >
+                <Github className="h-5 w-5 mr-3" />
+                <span className="font-medium">التسجيل مع GitHub</span>
+              </Button>
+              
+              <Button 
+                type="button" 
+                variant="outline" 
+                className="w-full h-12 hover-lift transition-all duration-300" 
+                onClick={() => handleSocialLogin('LinkedIn')}
+              >
+                <Linkedin className="h-5 w-5 mr-3 text-blue-600" />
+                <span className="font-medium">التسجيل مع LinkedIn</span>
+              </Button>
+              
+              <Button 
+                type="button" 
+                variant="outline" 
+                className="w-full h-12 hover-lift transition-all duration-300" 
+                onClick={() => handleSocialLogin('Facebook')}
+              >
+                <div className="w-5 h-5 mr-3 bg-blue-600 rounded text-white flex items-center justify-center text-sm font-bold">
+                  f
+                </div>
+                <span className="font-medium">التسجيل مع Facebook</span>
+              </Button>
+            </div>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <Separator className="w-full" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">أو</span>
+              </div>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="username">Username</Label>
+                  <Label htmlFor="username">اسم المستخدم</Label>
                   <div className="relative">
                     <AtSign className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -93,24 +161,24 @@ const Register = () => {
                       placeholder="johndoe"
                       value={formData.username}
                       onChange={handleChange}
-                      className="pl-10"
+                      className="pl-10 h-12"
                       required
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="name">الاسم الكامل</Label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="name"
                       name="name"
                       type="text"
-                      placeholder="John Doe"
+                      placeholder="أحمد محمد"
                       value={formData.name}
                       onChange={handleChange}
-                      className="pl-10"
+                      className="pl-10 h-12"
                       required
                     />
                   </div>
@@ -118,7 +186,7 @@ const Register = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">البريد الإلكتروني</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -128,41 +196,41 @@ const Register = () => {
                     placeholder="john@example.com"
                     value={formData.email}
                     onChange={handleChange}
-                    className="pl-10"
+                    className="pl-10 h-12"
                     required
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">كلمة المرور</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="password"
                     name="password"
                     type="password"
-                    placeholder="Minimum 6 characters"
+                    placeholder="6 أحرف على الأقل"
                     value={formData.password}
                     onChange={handleChange}
-                    className="pl-10"
+                    className="pl-10 h-12"
                     required
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword">تأكيد كلمة المرور</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="confirmPassword"
                     name="confirmPassword"
                     type="password"
-                    placeholder="Confirm your password"
+                    placeholder="أعد كتابة كلمة المرور"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="pl-10"
+                    className="pl-10 h-12"
                     required
                   />
                 </div>
@@ -170,27 +238,27 @@ const Register = () => {
 
               <Button 
                 type="submit" 
-                className="w-full rounded-full" 
+                className="w-full h-12 hover-lift transition-all duration-300" 
                 disabled={loading}
               >
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating account...
+                    جاري إنشاء الحساب...
                   </>
                 ) : (
-                  'Create Account'
+                  'إنشاء الحساب'
                 )}
               </Button>
             </form>
 
-            <div className="mt-6 text-center text-sm">
-              <span className="text-muted-foreground">Already have an account? </span>
+            <div className="text-center text-sm">
+              <span className="text-muted-foreground">لديك حساب بالفعل؟ </span>
               <Link 
                 to="/login" 
                 className="text-primary hover:underline font-medium"
               >
-                Sign in
+                تسجيل الدخول
               </Link>
             </div>
           </CardContent>

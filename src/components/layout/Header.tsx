@@ -15,7 +15,9 @@ const Header = () => {
       <div className="glass border-b backdrop-blur-lg">
         <div className="container flex items-center justify-between h-16 px-4 md:px-6">
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold font-['Playfair_Display']">Portfolio</span>
+            <span className="text-xl font-bold font-['Playfair_Display'] bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              VitePortfolio
+            </span>
           </Link>
           
           {/* Mobile menu button */}
@@ -69,7 +71,9 @@ const Header = () => {
           <div className="fixed inset-y-0 right-0 w-full max-w-sm glass border-l p-6 animate-slide-in-right">
             <div className="flex items-center justify-between mb-8">
               <Link to="/" className="flex items-center space-x-2" onClick={() => setIsMenuOpen(false)}>
-                <span className="text-xl font-bold font-['Playfair_Display']">Portfolio</span>
+                <span className="text-xl font-bold font-['Playfair_Display'] bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  VitePortfolio
+                </span>
               </Link>
               <Button 
                 variant="ghost" 
