@@ -11,49 +11,49 @@ const LandingPage = () => {
   const features = [
     {
       icon: <Globe className="h-8 w-8" />,
-      title: "إنشاء بورتفوليو فريد",
-      description: "أنشئ موقعك الشخصي المميز في دقائق مع قوالب احترافية وأدوات تخصيص متقدمة",
+      title: "Create Unique Portfolio",
+      description: "Build your distinctive personal website in minutes with professional templates and advanced customization tools",
       color: "from-blue-500 to-cyan-400"
     },
     {
       icon: <Palette className="h-8 w-8" />,
-      title: "تخصيص شامل",
-      description: "عدّل التصميم والألوان والخطوط لتعكس شخصيتك وهويتك المهنية بشكل مثالي",
+      title: "Complete Customization",
+      description: "Modify design, colors, and fonts to perfectly reflect your personality and professional identity",
       color: "from-purple-500 to-pink-400"
     },
     {
       icon: <Users className="h-8 w-8" />,
-      title: "ربط المشاريع",
-      description: "اربط مشاريعك مع زملائك والمتعاونين معك وأظهر أعمالك الجماعية بطريقة احترافية",
+      title: "Project Collaboration",
+      description: "Connect your projects with colleagues and collaborators, showcase your teamwork professionally",
       color: "from-green-500 to-emerald-400"
     },
     {
       icon: <Zap className="h-8 w-8" />,
-      title: "ربط سريع",
-      description: "استخرج معلوماتك تلقائياً من Github، LinkedIn، وحساباتك الأخرى لملء بورتفوليوك فوراً",
+      title: "Quick Connect",
+      description: "Automatically extract your information from Github, LinkedIn, and other accounts to fill your portfolio instantly",
       color: "from-orange-500 to-yellow-400"
     }
   ];
 
   const testimonials = [
     {
-      name: "أحمد محمد",
-      role: "مطور تطبيقات",
-      content: "بفضل VitePortfolio، تمكنت من إنشاء بورتفوليو رائع في أقل من ساعة!",
+      name: "Ahmed Johnson",
+      role: "Frontend Developer",
+      content: "Thanks to VitePortfolio, I was able to create an amazing portfolio in less than an hour!",
       avatar: "/api/placeholder/50/50",
       rating: 5
     },
     {
-      name: "فاطمة السالم",
-      role: "مصممة UI/UX",
-      content: "التخصيص سهل جداً والنتيجة احترافية. أنصح به كل المبدعين!",
+      name: "Sarah Wilson",
+      role: "UI/UX Designer",
+      content: "Customization is incredibly easy and the result is professional. I recommend it to all creatives!",
       avatar: "/api/placeholder/50/50",
       rating: 5
     },
     {
-      name: "خالد عبدالله",
-      role: "مهندس برمجيات",
-      content: "الربط التلقائي مع Github وLinkedIn وفر علي وقتاً كثيراً في إعداد البورتفوليو",
+      name: "Michael Chen",
+      role: "Software Engineer",
+      content: "Auto-sync with Github and LinkedIn saved me so much time setting up my portfolio",
       avatar: "/api/placeholder/50/50",
       rating: 5
     }
@@ -69,7 +69,7 @@ const LandingPage = () => {
             <div className="flex items-center justify-center mb-6">
               <Badge variant="secondary" className="text-primary font-semibold px-4 py-2">
                 <Sparkles className="w-4 h-4 mr-2" />
-                منصة البورتفوليو المتقدمة
+                Advanced Portfolio Platform
               </Badge>
             </div>
             
@@ -78,20 +78,20 @@ const LandingPage = () => {
             </h1>
             
             <p className="text-xl lg:text-2xl text-muted-foreground mb-8 leading-relaxed">
-              أنشئ بورتفوليوك المهني في دقائق مع أدوات ذكية لاستخراج معلوماتك تلقائياً من حساباتك المختلفة
+              Create your professional portfolio in minutes with smart tools to automatically extract your information from various accounts
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link to="/register">
                 <Button size="lg" className="text-lg px-8 py-6 hover-lift group">
-                  ابدأ مجاناً الآن
+                  Start Free Now
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               
               <Link to="/login">
                 <Button variant="outline" size="lg" className="text-lg px-8 py-6 hover-lift">
-                  تسجيل الدخول
+                  Sign In
                 </Button>
               </Link>
             </div>
@@ -99,15 +99,15 @@ const LandingPage = () => {
             <div className="mt-12 flex items-center justify-center gap-8 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span>مجاني تماماً</span>
+                <span>Completely Free</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span>بدون بطاقة ائتمان</span>
+                <span>No Credit Card</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span>إعداد في دقائق</span>
+                <span>Setup in Minutes</span>
               </div>
             </div>
           </div>
@@ -123,10 +123,10 @@ const LandingPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-              لماذا VitePortfolio؟
+              Why VitePortfolio?
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              نقدم لك أدوات متطورة لإنشاء بورتفوليو احترافي يبرز مهاراتك ومشاريعك بطريقة مبتكرة
+              We provide you with advanced tools to create a professional portfolio that highlights your skills and projects in an innovative way
             </p>
           </div>
 
@@ -165,10 +165,10 @@ const LandingPage = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center animate-fade-in">
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-              ربط سريع مع حساباتك
+              Quick Connect with Your Accounts
             </h2>
             <p className="text-xl text-muted-foreground mb-12">
-              استخرج معلوماتك تلقائياً من حساباتك المختلفة وابني بورتفوليوك في ثوانٍ
+              Automatically extract your information from various accounts and build your portfolio in seconds
             </p>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
@@ -193,7 +193,7 @@ const LandingPage = () => {
             
             <Link to="/register">
               <Button size="lg" className="text-lg px-10 py-6 hover-lift">
-                ابدأ الربط الآن
+                Start Connecting Now
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
@@ -206,10 +206,10 @@ const LandingPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-              ماذا يقول عملاؤنا؟
+              What Our Customers Say?
             </h2>
             <p className="text-xl text-muted-foreground">
-              آراء حقيقية من مستخدمين راضين عن خدماتنا
+              Real reviews from satisfied users of our services
             </p>
           </div>
 
@@ -247,23 +247,23 @@ const LandingPage = () => {
       <section className="section-padding bg-gradient-to-r from-primary to-accent text-white">
         <div className="container mx-auto px-4 text-center animate-fade-in">
           <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-            جاهز لإنشاء بورتفوليوك؟
+            Ready to Create Your Portfolio?
           </h2>
           <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            انضم لآلاف المحترفين الذين اختاروا VitePortfolio لبناء حضورهم الرقمي المميز
+            Join thousands of professionals who chose VitePortfolio to build their distinctive digital presence
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to="/register">
               <Button size="lg" variant="secondary" className="text-lg px-10 py-6 hover-lift">
-                ابدأ مجاناً الآن
+                Start Free Now
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
             
             <Link to="/projects">
               <Button size="lg" variant="outline" className="text-lg px-8 py-6 border-white text-white hover:bg-white hover:text-primary hover-lift">
-                شاهد الأمثلة
+                View Examples
               </Button>
             </Link>
           </div>
