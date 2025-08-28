@@ -11,6 +11,7 @@ import AuthGuard from "./components/auth/AuthGuard";
 import MainLayout from "./components/layout/MainLayout";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
 import Home from "./pages/Home";
+import LandingPage from "./pages/LandingPage";
 import Projects from "./pages/Projects";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -47,9 +48,16 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            {/* Marketing landing page */}
+            <Route path="/" element={<LandingPage />} />
+            
+            {/* Demo route for existing template */}
+            <Route path="/demo" element={<MainLayout />}>
+              <Route index element={<Home />} />
+            </Route>
+            
             {/* Public routes */}
             <Route element={<MainLayout />}>
-              <Route path="/" element={<Home />} />
               <Route path="/projects" element={<Projects />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
