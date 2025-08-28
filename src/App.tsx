@@ -4,6 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { SignedIn } from "@clerk/clerk-react";
+import { initBuilder } from "@/components/builder";
 import { AuthProvider } from "./contexts/AuthContext";
 import AuthGuard from "./components/auth/AuthGuard";
 import MainLayout from "./components/layout/MainLayout";
@@ -19,10 +21,23 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import DashboardProjects from "./pages/dashboard/Projects";
 import NewProject from "./pages/dashboard/NewProject";
 import Profile from "./pages/dashboard/Profile";
+import Editor from "./pages/dashboard/Editor";
 import PublicProfile from "./pages/PublicProfile";
+import PublicSite from "./pages/PublicSite";
 import NotFound from "./pages/NotFound";
 
+// Initialize Builder.io components
+initBuilder();
+
 const queryClient = new QueryClient();
+
+function Protected({ children }: { children: React.ReactNode }) {
+  return (
+    <SignedIn>
+      {children}
+    </SignedIn>
+  );
+}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -45,20 +60,31 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             
-            {/* Public profile */}
-            <Route path="/u/:username" element={<PublicProfile />} />
+            {/* Builder.io powered public sites */}
+            <Route path="/u/:username" element={<PublicSite />} />
+            <Route path="/u/:username/:pageSlug" element={<PublicSite />} />
+            
+            {/* Legacy public profile (fallback) */}
+            <Route path="/profile/:username" element={<PublicProfile />} />
             
             {/* Protected dashboard routes */}
             <Route path="/dashboard" element={
-              <AuthGuard>
+              <Protected>
                 <DashboardLayout />
-              </AuthGuard>
+              </Protected>
             }>
               <Route index element={<Dashboard />} />
               <Route path="projects" element={<DashboardProjects />} />
               <Route path="projects/new" element={<NewProject />} />
               <Route path="profile" element={<Profile />} />
             </Route>
+            
+            {/* Protected editor */}
+            <Route path="/editor/:pageId" element={
+              <Protected>
+                <Editor />
+              </Protected>
+            } />
             
             <Route path="*" element={<NotFound />} />
           </Routes>

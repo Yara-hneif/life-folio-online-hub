@@ -1,8 +1,34 @@
-# Life Folio – Personal Portfolio Hub
+# Life Portfolio Online Hub
 
-✨ A beautiful, responsive, and modern personal portfolio website designed to showcase creative projects.
+A modern, responsive multi-user portfolio platform built with React, TypeScript, Tailwind CSS, Clerk Authentication, and Builder.io CMS.
 
-✨ Portfolio platform built with **Vite + React + TailwindCSS + TypeScript**
+## Environment Setup
+
+1. Copy `.env.example` to `.env` and fill in your keys:
+
+```bash
+cp .env.example .env
+```
+
+2. Get your Clerk Publishable Key:
+   - Sign up at https://go.clerk.com/lovable
+   - Create a new application
+   - Copy the publishable key starting with `pk_`
+
+3. Get your Builder.io Public Key:
+   - Sign up at https://builder.io
+   - Create a new space
+   - Copy the public API key
+
+## Features
+
+- **Multi-user Authentication**: Powered by Clerk
+- **Visual Page Builder**: Drag-and-drop content editing with Builder.io
+- **Custom Public URLs**: Each user gets `/u/username` and `/u/username/page-slug`
+- **Dashboard**: Manage pages, view analytics, edit content
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+
+✨ Portfolio platform built with **Vite + React + TailwindCSS + TypeScript + Clerk + Builder.io**
 
 ---
 

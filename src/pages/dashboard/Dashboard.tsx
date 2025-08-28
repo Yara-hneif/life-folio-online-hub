@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { useUser } from "@clerk/clerk-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { 
   FolderOpen, 
   Plus, 
@@ -48,18 +48,90 @@ const mockRecentProjects = [
   }
 ];
 
+type PageItem = { id?: string; name: string; slug: string; isHome?: boolean; builderJson?: any };
+
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { user } = useUser();
+  const [pages, setPages] = useState<PageItem[]>([]);
+  const username = user?.username || user?.primaryEmailAddress?.emailAddress?.split("@")[0] || "user";
+  const siteSlug = username;
+
+  useEffect(() => {
+    const apiKey = import.meta.env.VITE_BUILDER_PUBLIC_KEY;
+    if (!apiKey || !user?.id) return;
+    
+    const q = encodeURIComponent(JSON.stringify({ "data.userId": user?.id, "data.siteSlug": siteSlug }));
+    fetch(`https://cdn.builder.io/api/v3/content/page?apiKey=${apiKey}&limit=50&query=${q}`)
+      .then(r => r.json())
+      .then(res => {
+        const items = (res?.results || []).map((r: any) => ({
+          id: r?.id,
+          name: r?.name || r?.data?.name || r?.data?.slug || "Untitled",
+          slug: r?.data?.slug || "untitled",
+          isHome: !!r?.data?.isHome,
+          builderJson: r,
+        }));
+        setPages(items);
+      })
+      .catch(() => setPages([]));
+  }, [user?.id, siteSlug]);
 
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold">Welcome back, {user?.name?.split(' ')[0]}!</h1>
-        <p className="text-muted-foreground mt-2">
-          Here's an overview of your portfolio activity
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Welcome back, {user?.firstName || user?.username}!</h1>
+          <p className="text-muted-foreground mt-2">
+            Manage your portfolio site: /u/{siteSlug}
+          </p>
+        </div>
+        <Link to="/editor/new">
+          <Button className="gap-2">
+            <Plus className="h-4 w-4" />
+            New Page
+          </Button>
+        </Link>
       </div>
+
+      {/* Pages List */}
+      <Card>
+        <CardHeader>
+          <CardTitle>My Pages</CardTitle>
+          <CardDescription>
+            Manage your site pages and content
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {pages.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground mb-4">No pages found. Create your first page to get started.</p>
+              <Link to="/editor/new">
+                <Button variant="outline">Create First Page</Button>
+              </Link>
+            </div>
+          ) : (
+            pages.map(p => (
+              <div key={p.slug} className="rounded-xl border p-4 flex items-center justify-between">
+                <div>
+                  <div className="font-medium">{p.name}</div>
+                  <div className="text-sm text-muted-foreground">
+                    /u/{siteSlug}/{p.isHome ? "" : p.slug}{p.isHome ? " (home)" : ""}
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Link to={`/editor/${p.id || p.slug}`}>
+                    <Button variant="outline" size="sm">Edit</Button>
+                  </Link>
+                  <a href={`/u/${siteSlug}/${p.isHome ? "" : p.slug}`} target="_blank" rel="noopener noreferrer">
+                    <Button variant="outline" size="sm">View</Button>
+                  </a>
+                </div>
+              </div>
+            ))
+          )}
+        </CardContent>
+      </Card>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
