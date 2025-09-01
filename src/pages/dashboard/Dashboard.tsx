@@ -86,12 +86,20 @@ const Dashboard = () => {
             Manage your portfolio site: /u/{siteSlug}
           </p>
         </div>
-        <Link to="/editor/new">
-          <Button className="gap-2">
-            <Plus className="h-4 w-4" />
-            New Page
-          </Button>
-        </Link>
+        <div className="flex gap-2">
+          <Link to="/dashboard/sites/new">
+            <Button className="gap-2">
+              <Plus className="h-4 w-4" />
+              New Site
+            </Button>
+          </Link>
+          <Link to="/editor/new">
+            <Button variant="outline" className="gap-2">
+              <Plus className="h-4 w-4" />
+              New Page
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Pages List */}

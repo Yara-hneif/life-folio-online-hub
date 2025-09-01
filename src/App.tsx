@@ -19,6 +19,8 @@ import Admin from "./pages/Admin";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Dashboard from "./pages/dashboard/Dashboard";
+import Sites from "./pages/dashboard/Sites";
+import NewSite from "./pages/dashboard/NewSite";
 import DashboardProjects from "./pages/dashboard/Projects";
 import NewProject from "./pages/dashboard/NewProject";
 import Profile from "./pages/dashboard/Profile";
@@ -82,6 +84,8 @@ const App = () => (
               </Protected>
             }>
               <Route index element={<Dashboard />} />
+              <Route path="sites" element={<Sites />} />
+              <Route path="sites/new" element={<NewSite />} />
               <Route path="projects" element={<DashboardProjects />} />
               <Route path="projects/new" element={<NewProject />} />
               <Route path="profile" element={<Profile />} />
