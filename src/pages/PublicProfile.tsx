@@ -66,6 +66,20 @@ const PublicProfile = () => {
       </div>
     );
   }
+  
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">User Not Found</h1>
+          <p className="text-muted-foreground mb-6">The user you're looking for doesn't exist.</p>
+          <Button asChild>
+            <Link to="/">Go Home</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -99,35 +113,35 @@ const PublicProfile = () => {
                 )}
 
                 {/* Social Links */}
-                {user.socialLinks && Object.keys(user.socialLinks).length > 0 && (
+                {user.social_links && Object.keys(user.social_links).length > 0 && (
                   <div className="flex flex-wrap gap-3">
-                    {user.socialLinks.github && (
+                    {user.social_links.github && (
                       <Button variant="outline" size="sm" asChild>
-                        <a href={user.socialLinks.github} target="_blank" rel="noopener noreferrer">
+                        <a href={user.social_links.github} target="_blank" rel="noopener noreferrer">
                           <Github className="h-4 w-4 mr-2" />
                           GitHub
                         </a>
                       </Button>
                     )}
-                    {user.socialLinks.linkedin && (
+                    {user.social_links.linkedin && (
                       <Button variant="outline" size="sm" asChild>
-                        <a href={user.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
+                        <a href={user.social_links.linkedin} target="_blank" rel="noopener noreferrer">
                           <Linkedin className="h-4 w-4 mr-2" />
                           LinkedIn
                         </a>
                       </Button>
                     )}
-                    {user.socialLinks.twitter && (
+                    {user.social_links.twitter && (
                       <Button variant="outline" size="sm" asChild>
-                        <a href={user.socialLinks.twitter} target="_blank" rel="noopener noreferrer">
+                        <a href={user.social_links.twitter} target="_blank" rel="noopener noreferrer">
                           <Twitter className="h-4 w-4 mr-2" />
                           Twitter
                         </a>
                       </Button>
                     )}
-                    {user.socialLinks.website && (
+                    {user.social_links.website && (
                       <Button variant="outline" size="sm" asChild>
-                        <a href={user.socialLinks.website} target="_blank" rel="noopener noreferrer">
+                        <a href={user.social_links.website} target="_blank" rel="noopener noreferrer">
                           <Globe className="h-4 w-4 mr-2" />
                           Website
                         </a>
@@ -175,7 +189,7 @@ const PublicProfile = () => {
           <div className="mb-12">
             <h2 className="text-2xl font-bold mb-6">Skills & Technologies</h2>
             <div className="flex flex-wrap gap-2">
-              {user.skills.map((skill) => (
+              {user.skills.map((skill: string) => (
                 <Badge key={skill} variant="secondary" className="text-sm py-1 px-3">
                   {skill}
                 </Badge>
