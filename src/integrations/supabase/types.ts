@@ -40,6 +40,7 @@ export type Database = {
       }
       blogs: {
         Row: {
+          clerk_user_id: string | null
           content_markdown: string | null
           created_at: string | null
           id: string
@@ -49,6 +50,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          clerk_user_id?: string | null
           content_markdown?: string | null
           created_at?: string | null
           id?: string
@@ -58,6 +60,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          clerk_user_id?: string | null
           content_markdown?: string | null
           created_at?: string | null
           id?: string
@@ -70,6 +73,7 @@ export type Database = {
       }
       certifications: {
         Row: {
+          clerk_user_id: string | null
           credential_url: string | null
           expiry_date: string | null
           id: string
@@ -79,6 +83,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          clerk_user_id?: string | null
           credential_url?: string | null
           expiry_date?: string | null
           id?: string
@@ -88,6 +93,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          clerk_user_id?: string | null
           credential_url?: string | null
           expiry_date?: string | null
           id?: string
@@ -139,6 +145,7 @@ export type Database = {
       }
       education: {
         Row: {
+          clerk_user_id: string | null
           degree: string | null
           description: string | null
           end_date: string | null
@@ -148,6 +155,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          clerk_user_id?: string | null
           degree?: string | null
           description?: string | null
           end_date?: string | null
@@ -157,6 +165,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          clerk_user_id?: string | null
           degree?: string | null
           description?: string | null
           end_date?: string | null
@@ -169,6 +178,7 @@ export type Database = {
       }
       experience: {
         Row: {
+          clerk_user_id: string | null
           company: string | null
           description: string | null
           end_date: string | null
@@ -179,6 +189,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          clerk_user_id?: string | null
           company?: string | null
           description?: string | null
           end_date?: string | null
@@ -189,6 +200,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          clerk_user_id?: string | null
           company?: string | null
           description?: string | null
           end_date?: string | null
@@ -328,6 +340,7 @@ export type Database = {
       projects: {
         Row: {
           category: string | null
+          clerk_user_id: string | null
           created_at: string | null
           description: string | null
           id: string
@@ -342,6 +355,7 @@ export type Database = {
         }
         Insert: {
           category?: string | null
+          clerk_user_id?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
@@ -356,6 +370,7 @@ export type Database = {
         }
         Update: {
           category?: string | null
+          clerk_user_id?: string | null
           created_at?: string | null
           description?: string | null
           id?: string

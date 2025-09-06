@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import UserAvatar from '@/components/common/UserAvatar';
 import ProjectCard from '@/components/projects/ProjectCard';
-import { mockUsers } from '@/contexts/AuthContext';
-import { getProjectsByUserId, getCollaborativeProjects } from '@/data/mockData';
+import { supabase } from '@/integrations/supabase/client';
 import { 
   Github, 
   Linkedin, 
@@ -20,26 +19,53 @@ import {
 
 const PublicProfile = () => {
   const { username } = useParams<{ username: string }>();
+  const [user, setUser] = useState<any>(null);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   
-  const user = mockUsers.find(u => u.username === username);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!username) return;
+      
+      try {
+        // Fetch user profile
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('username', username)
+          .single();
+
+        if (profile) {
+          setUser(profile);
+          
+          // Fetch user's published projects
+          const { data: userProjects } = await supabase
+            .from('projects')
+            .select('*')
+            .eq('clerk_user_id', profile.clerk_id)
+            .eq('status', 'published');
+          
+          setProjects(userProjects || []);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [username]);
   
-  if (!user) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">User Not Found</h1>
-          <p className="text-muted-foreground mb-6">The user you're looking for doesn't exist.</p>
-          <Button asChild>
-            <Link to="/">Go Home</Link>
-          </Button>
+          <p className="text-muted-foreground">Loading profile...</p>
         </div>
       </div>
     );
   }
-
-  const ownedProjects = getProjectsByUserId(user.id);
-  const collaborativeProjects = getCollaborativeProjects(user.id);
-  const allProjects = [...ownedProjects, ...collaborativeProjects];
 
   return (
     <div className="min-h-screen bg-background">
@@ -118,17 +144,17 @@ const PublicProfile = () => {
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div className="text-center">
-                  <p className="text-2xl font-bold">{allProjects.length}</p>
+                  <p className="text-2xl font-bold">{projects.length}</p>
                   <p className="text-sm text-muted-foreground">Total Projects</p>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4 text-center">
                   <div>
-                    <p className="font-semibold">{ownedProjects.length}</p>
+                    <p className="font-semibold">{projects.length}</p>
                     <p className="text-xs text-muted-foreground">Created</p>
                   </div>
                   <div>
-                    <p className="font-semibold">{collaborativeProjects.length}</p>
+                    <p className="font-semibold">0</p>
                     <p className="text-xs text-muted-foreground">Collaborated</p>
                   </div>
                 </div>
@@ -163,11 +189,11 @@ const PublicProfile = () => {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold">Projects</h2>
             <div className="text-sm text-muted-foreground">
-              {allProjects.length} project{allProjects.length !== 1 ? 's' : ''}
+              {projects.length} project{projects.length !== 1 ? 's' : ''}
             </div>
           </div>
 
-          {allProjects.length === 0 ? (
+          {projects.length === 0 ? (
             <Card>
               <CardContent className="py-12 text-center">
                 <p className="text-muted-foreground">No projects to display</p>
@@ -175,7 +201,7 @@ const PublicProfile = () => {
             </Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {allProjects.map((project) => (
+              {projects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
             </div>
