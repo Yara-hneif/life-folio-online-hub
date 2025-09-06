@@ -40,22 +40,30 @@ const Register = () => {
       return;
     }
     
-    try {
-      await register({
-        username: formData.username,
-        name: formData.name,
-        email: formData.email,
-        password: formData.password
-      });
+    const result = await register({
+      username: formData.username,
+      name: formData.name,
+      email: formData.email,
+      password: formData.password
+    });
+
+    if (result.status === 'complete') {
       toast.success('تم إنشاء الحساب بنجاح!');
       navigate('/dashboard');
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'فشل في إنشاء الحساب');
+    } else if (result.status === 'needs_verification') {
+      toast.info('يرجى التحقق من بريدك الإلكتروني لتأكيد الحساب');
+    } else {
+      toast.error(result.error || 'فشل في إنشاء الحساب');
     }
   };
 
-  const handleSocialLogin = (provider: string) => {
-    toast.info(`سيتم دعم التسجيل عبر ${provider} قريباً`);
+  const handleSocialLogin = async (provider: 'oauth_google' | 'oauth_github' | 'oauth_facebook' | 'oauth_linkedin_oidc') => {
+    try {
+      const { loginWithProvider } = useAuth();
+      await loginWithProvider(provider);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'فشل التسجيل');
+    }
   };
 
   return (
@@ -100,7 +108,7 @@ const Register = () => {
                 type="button" 
                 variant="outline" 
                 className="w-full h-12 hover-lift transition-all duration-300" 
-                onClick={() => handleSocialLogin('Gmail')}
+                onClick={() => handleSocialLogin('oauth_google')}
               >
                 <Mail className="h-5 w-5 mr-3 text-red-500" />
                 <span className="font-medium">التسجيل مع Gmail</span>
@@ -110,7 +118,7 @@ const Register = () => {
                 type="button" 
                 variant="outline" 
                 className="w-full h-12 hover-lift transition-all duration-300" 
-                onClick={() => handleSocialLogin('GitHub')}
+                onClick={() => handleSocialLogin('oauth_github')}
               >
                 <Github className="h-5 w-5 mr-3" />
                 <span className="font-medium">التسجيل مع GitHub</span>
@@ -120,7 +128,7 @@ const Register = () => {
                 type="button" 
                 variant="outline" 
                 className="w-full h-12 hover-lift transition-all duration-300" 
-                onClick={() => handleSocialLogin('LinkedIn')}
+                onClick={() => handleSocialLogin('oauth_linkedin_oidc')}
               >
                 <Linkedin className="h-5 w-5 mr-3 text-blue-600" />
                 <span className="font-medium">التسجيل مع LinkedIn</span>
@@ -130,7 +138,7 @@ const Register = () => {
                 type="button" 
                 variant="outline" 
                 className="w-full h-12 hover-lift transition-all duration-300" 
-                onClick={() => handleSocialLogin('Facebook')}
+                onClick={() => handleSocialLogin('oauth_facebook')}
               >
                 <div className="w-5 h-5 mr-3 bg-blue-600 rounded text-white flex items-center justify-center text-sm font-bold">
                   f
