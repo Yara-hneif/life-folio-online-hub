@@ -341,6 +341,7 @@ export type Database = {
         Row: {
           category: string | null
           clerk_user_id: string | null
+          collaborators: Json | null
           created_at: string | null
           description: string | null
           id: string
@@ -351,11 +352,13 @@ export type Database = {
           status: string | null
           tags: string[] | null
           title: string
+          updated_at: string | null
           user_id: string | null
         }
         Insert: {
           category?: string | null
           clerk_user_id?: string | null
+          collaborators?: Json | null
           created_at?: string | null
           description?: string | null
           id?: string
@@ -366,11 +369,13 @@ export type Database = {
           status?: string | null
           tags?: string[] | null
           title: string
+          updated_at?: string | null
           user_id?: string | null
         }
         Update: {
           category?: string | null
           clerk_user_id?: string | null
+          collaborators?: Json | null
           created_at?: string | null
           description?: string | null
           id?: string
@@ -381,9 +386,70 @@ export type Database = {
           status?: string | null
           tags?: string[] | null
           title?: string
+          updated_at?: string | null
           user_id?: string | null
         }
         Relationships: []
+      }
+      site_messages: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          is_read: boolean | null
+          is_starred: boolean | null
+          message: string
+          name: string | null
+          replied_at: string | null
+          site_id: string
+          subject: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_read?: boolean | null
+          is_starred?: boolean | null
+          message: string
+          name?: string | null
+          replied_at?: string | null
+          site_id: string
+          subject?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_read?: boolean | null
+          is_starred?: boolean | null
+          message?: string
+          name?: string | null
+          replied_at?: string | null
+          site_id?: string
+          subject?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "site_messages_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "site_messages_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       site_pages: {
         Row: {
@@ -427,9 +493,11 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          name: string | null
           profile_id: string | null
           published: boolean
           slug: string
+          status: string | null
           template: string
           title: string
           user_id: string
@@ -437,9 +505,11 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          name?: string | null
           profile_id?: string | null
           published?: boolean
           slug: string
+          status?: string | null
           template?: string
           title?: string
           user_id: string
@@ -447,9 +517,11 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          name?: string | null
           profile_id?: string | null
           published?: boolean
           slug?: string
+          status?: string | null
           template?: string
           title?: string
           user_id?: string
@@ -482,6 +554,44 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          permissions: Json | null
+          role: Database["public"]["Enums"]["app_role"]
+          site_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          permissions?: Json | null
+          role: Database["public"]["Enums"]["app_role"]
+          site_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          permissions?: Json | null
+          role?: Database["public"]["Enums"]["app_role"]
+          site_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_skills: {
         Row: {
           level: number | null
@@ -513,10 +623,26 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _site_id?: string
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      has_site_access: {
+        Args: { _site_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role:
+        | "super_admin"
+        | "site_owner"
+        | "site_admin"
+        | "editor"
+        | "viewer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -643,6 +769,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["super_admin", "site_owner", "site_admin", "editor", "viewer"],
+    },
   },
 } as const
