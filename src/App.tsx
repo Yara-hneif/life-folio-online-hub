@@ -1,12 +1,9 @@
 
-import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SignedIn } from "@clerk/clerk-react";
 import { initBuilder } from "@/components/builder";
-import { AuthProvider } from "./contexts/AuthContext";
 import AuthGuard from "./components/auth/AuthGuard";
 import MainLayout from "./components/layout/MainLayout";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
@@ -24,15 +21,14 @@ import NewSite from "./pages/dashboard/NewSite";
 import DashboardProjects from "./pages/dashboard/Projects";
 import NewProject from "./pages/dashboard/NewProject";
 import Profile from "./pages/dashboard/Profile";
+import DashboardProfile from "./pages/dashboard/DashboardProfile";
 import Editor from "./pages/dashboard/Editor";
-import PublicProfile from "./pages/PublicProfile";
+import PublicProfile from "./pages/portfolio/PublicPortfolio";
 import PublicSite from "./pages/PublicSite";
 import NotFound from "./pages/NotFound";
 
 // Initialize Builder.io components
 initBuilder();
-
-const queryClient = new QueryClient();
 
 function Protected({ children }: { children: React.ReactNode }) {
   return (
@@ -43,11 +39,8 @@ function Protected({ children }: { children: React.ReactNode }) {
 }
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AuthProvider>
-        <Toaster />
-        <Sonner />
+  <TooltipProvider>
+    <Sonner />
         <BrowserRouter>
           <Routes>
             {/* Marketing landing page */}
@@ -74,8 +67,8 @@ const App = () => (
             <Route path="/u/:username" element={<PublicSite />} />
             <Route path="/u/:username/:pageSlug" element={<PublicSite />} />
             
-            {/* Legacy public profile (fallback) */}
-            <Route path="/profile/:username" element={<PublicProfile />} />
+            {/* Portfolio routes */}
+            <Route path="/portfolio/:username" element={<PublicProfile />} />
             
             {/* Protected dashboard routes */}
             <Route path="/dashboard" element={
@@ -88,7 +81,7 @@ const App = () => (
               <Route path="sites/new" element={<NewSite />} />
               <Route path="projects" element={<DashboardProjects />} />
               <Route path="projects/new" element={<NewProject />} />
-              <Route path="profile" element={<Profile />} />
+              <Route path="profile" element={<DashboardProfile />} />
             </Route>
             
             {/* Protected editor */}
@@ -101,9 +94,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-      </AuthProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+  </TooltipProvider>
 );
 
 export default App;
