@@ -1,23 +1,41 @@
 import { supabase } from '@/integrations/supabase/client';
-import { Database } from '@/integrations/supabase/types';
 
-type Blog = Database['public']['Tables']['blogs']['Row'];
-type BlogInsert = Database['public']['Tables']['blogs']['Insert'];
-type BlogUpdate = Database['public']['Tables']['blogs']['Update'];
+interface Blog {
+  id: string;
+  profile_id?: string;
+  user_id: string;
+  title: string;
+  content_markdown?: string;
+  slug: string;
+  published?: boolean;
+  is_public?: boolean;
+  created_at: string;
+  updated_at?: string;
+}
+
+interface BlogInsert {
+  profile_id?: string;
+  user_id?: string;
+  title: string;
+  content_markdown?: string;
+  slug: string;
+  published?: boolean;
+  is_public?: boolean;
+}
+
+interface BlogUpdate {
+  title?: string;
+  content_markdown?: string;
+  slug?: string;
+  published?: boolean;
+  is_public?: boolean;
+}
 
 export const blogsApi = {
-  async createBlog(blog: any): Promise<Blog> {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('clerk_id', (await supabase.auth.getUser()).data.user?.id!)
-      .single();
-
-    if (!profile) throw new Error('Profile not found');
-
+  async createBlog(blog: BlogInsert): Promise<any> {
     const { data, error } = await supabase
       .from('blogs')
-      .insert({ ...blog, profile_id: profile.id })
+      .insert(blog)
       .select()
       .single();
 
@@ -25,7 +43,7 @@ export const blogsApi = {
     return data;
   },
 
-  async getUserBlogs(profileId: string): Promise<Blog[]> {
+  async getUserBlogs(profileId: string): Promise<any[]> {
     const { data, error } = await supabase
       .from('blogs')
       .select('*')
@@ -33,10 +51,10 @@ export const blogsApi = {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data;
+    return data as any[] || [];
   },
 
-  async getPublicBlogs(): Promise<Blog[]> {
+  async getPublicBlogs(): Promise<any[]> {
     const { data, error } = await supabase
       .from('blogs')
       .select('*')
@@ -44,10 +62,10 @@ export const blogsApi = {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data;
+    return data as any[] || [];
   },
 
-  async updateBlog(id: string, updates: BlogUpdate): Promise<Blog> {
+  async updateBlog(id: string, updates: BlogUpdate): Promise<any> {
     const { data, error } = await supabase
       .from('blogs')
       .update(updates)
@@ -68,7 +86,7 @@ export const blogsApi = {
     if (error) throw error;
   },
 
-  async getBlogBySlug(slug: string): Promise<Blog | null> {
+  async getBlogBySlug(slug: string): Promise<any | null> {
     const { data, error } = await supabase
       .from('blogs')
       .select('*')

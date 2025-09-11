@@ -1,23 +1,62 @@
 import { supabase } from '@/integrations/supabase/client';
-import { Database } from '@/integrations/supabase/types';
 
-type Project = Database['public']['Tables']['projects']['Row'];
-type ProjectInsert = Database['public']['Tables']['projects']['Insert'];
-type ProjectUpdate = Database['public']['Tables']['projects']['Update'];
+interface Project {
+  id: string;
+  profile_id?: string;
+  user_id: string;
+  title: string;
+  description?: string;
+  slug: string;
+  published?: boolean;
+  is_public?: boolean;
+  category?: string;
+  image_url?: string;
+  tags?: string[];
+  collaborators?: any;
+  live_url?: string;
+  repo_url?: string;
+  status?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+interface ProjectInsert {
+  profile_id?: string;
+  user_id?: string;
+  title: string;
+  description?: string;
+  slug: string;
+  published?: boolean;
+  is_public?: boolean;
+  category?: string;
+  image_url?: string;
+  tags?: string[];
+  collaborators?: any;
+  live_url?: string;
+  repo_url?: string;
+  status?: string;
+}
+
+interface ProjectUpdate {
+  title?: string;
+  description?: string;
+  slug?: string;
+  published?: boolean;
+  is_public?: boolean;
+  category?: string;
+  image_url?: string;
+  tags?: string[];
+  collaborators?: any;
+  live_url?: string;
+  repo_url?: string;
+  status?: string;
+}
 
 export const projectsApi = {
-  async createProject(project: any): Promise<Project> {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('clerk_id', (await supabase.auth.getUser()).data.user?.id!)
-      .single();
-
-    if (!profile) throw new Error('Profile not found');
-
+  async createProject(project: ProjectInsert): Promise<any> {
     const { data, error } = await supabase
       .from('projects')
-      .insert({ ...project, profile_id: profile.id })
+      .insert(project)
       .select()
       .single();
 
@@ -25,7 +64,7 @@ export const projectsApi = {
     return data;
   },
 
-  async getUserProjects(profileId: string): Promise<Project[]> {
+  async getUserProjects(profileId: string): Promise<any[]> {
     const { data, error } = await supabase
       .from('projects')
       .select('*')
@@ -33,10 +72,10 @@ export const projectsApi = {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data;
+    return data as any[] || [];
   },
 
-  async getPublicProjects(): Promise<Project[]> {
+  async getPublicProjects(): Promise<any[]> {
     const { data, error } = await supabase
       .from('projects')
       .select('*')
@@ -44,10 +83,10 @@ export const projectsApi = {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data;
+    return data as any[] || [];
   },
 
-  async updateProject(id: string, updates: ProjectUpdate): Promise<Project> {
+  async updateProject(id: string, updates: ProjectUpdate): Promise<any> {
     const { data, error } = await supabase
       .from('projects')
       .update(updates)
@@ -68,7 +107,7 @@ export const projectsApi = {
     if (error) throw error;
   },
 
-  async getProjectBySlug(slug: string): Promise<Project | null> {
+  async getProjectBySlug(slug: string): Promise<any | null> {
     const { data, error } = await supabase
       .from('projects')
       .select('*')
